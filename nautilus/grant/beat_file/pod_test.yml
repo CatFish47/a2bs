@@ -1,8 +1,11 @@
 apiVersion: v1
-kind: Pod
+kind: Pod # 2 kinds: pods and jobs
+# pods run for 6 hrs, terminate after 6 hrs
+# jobs run until you want it to stop/is killed
+# usually choose which to run -- for experiments, just use Pod so if u forget to kill pod it will kill itself
 metadata:
-  name: tsc003-download-files
-  namespace: cyberarch
+  name: gxcheng-test # define the name of container (prefix-what-do)
+  namespace: cyberarch # cyberarch namespace
 
 spec:
   containers:
@@ -18,14 +21,14 @@ spec:
               pip install -r a2bs/requirements.txt
               echo "done setup"
               sleep infinity
-      resources:
+      resources: #don't sleep infinity on a job unless if u kill it
         requests:
-          cpu: "10"
-          memory: "20Gi"
+          cpu: "5"
+          memory: "10Gi"
           nvidia.com/gpu: "1"
         limits:
-          cpu: "10"
-          memory: "20Gi"
+          cpu: "5"
+          memory: "10Gi"
           nvidia.com/gpu: "1"
       volumeMounts:
         - name: tsc003-beat-vol
