@@ -16,6 +16,14 @@ import scipy.io.wavfile
 
 class a2bsDataset(Dataset):
     def __init__(self, seed = 42, loader_type = 'train', mount_dir = '/tsc003-beat-vol', data_dir = 'beat_english_v0.2.1', facial_fps=15, audio_fps=16000, facial_length=34, stride=10, speaker_id=True, build_cache=False, map_gb=5, file_cut=-1, is_win=False):
+        '''
+            __init__: initializes the class
+
+            seed: sets a seed for the pseudorandomness of the train/test split
+            loader_type: determines what kind of file to look for in LMDB
+            mount_dir: also for lmdb
+            data_dir: 
+        '''
         self.seed = seed
         self.loader_type = loader_type
         self.mount_dir = mount_dir

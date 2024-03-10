@@ -4,7 +4,7 @@ kind: Pod # 2 kinds: pods and jobs
 # jobs run until you want it to stop/is killed
 # usually choose which to run -- for experiments, just use Pod so if u forget to kill pod it will kill itself
 metadata:
-  name: gxcheng-test # define the name of container (prefix-what-do)
+  name: gxcheng-download-files # define the name of container (prefix-what-do)
   namespace: cyberarch # cyberarch namespace
 
 spec:
@@ -17,7 +17,7 @@ spec:
             - -c
             - |
               source /usr/local/bin/_activate_current_env.sh
-              git clone https://github.com/t-sekai/a2bs.git
+              git clone https://github.com/CatFish47/a2bs.git
               pip install -r a2bs/requirements.txt
               echo "done setup"
               sleep infinity
@@ -31,12 +31,12 @@ spec:
           memory: "10Gi"
           nvidia.com/gpu: "1"
       volumeMounts:
-        - name: tsc003-beat-vol
-          mountPath: /tsc003-beat-vol
+        - name: gxcheng-beat-vol
+          mountPath: /gxcheng-beat-vol
   volumes:
-    - name: tsc003-beat-vol
+    - name: gxcheng-beat-vol
       persistentVolumeClaim:
-        claimName: tsc003-beat-vol
+        claimName: gxcheng-beat-vol
   restartPolicy: Never
   affinity:
     nodeAffinity:
