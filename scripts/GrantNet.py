@@ -1,3 +1,4 @@
+from Dataset import a2bsDataset
 import torch
 import torch.nn as nn
 import numpy as np
@@ -212,7 +213,6 @@ class RMSLELoss(nn.Module):
 if __name__ == "__main__":
     print("Initializing model...")
 
-    from Dataset import a2bsDataset
     train_data = a2bsDataset(build_cache=False)
 
     mount_dir = '/gxcheng-beat-vol'
@@ -225,17 +225,35 @@ if __name__ == "__main__":
         drop_last=True,
     )
 
+    lr = 1e-3
+
     net = SimpleBSGen().cuda()
-    optimizer = torch.optim.Adam(net.parameters(), lr=1e-3)
+    optimizer = torch.optim.Adam(net.parameters(), lr=lr)
     loss_function = RMSLELoss()
     train_loss = []
     eval_loss = []
 
     net.train()
-    num_epochs = 2  # 20
+    num_epochs = 20
     log_period = 100
     eval_period = 400
     eval_it = 30
+
+    print("Setting up wandb...")
+    import wandb
+
+    # start a new wandb run to track this script
+    wandb.init(
+        # set the wandb project where this run will be logged
+        project="a2bs",
+
+        # track hyperparameters and run metadata
+        config={
+            "learning_rate": lr,
+            "epochs": num_epochs,
+            "batch_size": len(train_loader)
+        }
+    )
 
     for epoch in range(num_epochs):
         for it, (in_audio, facial, in_id) in enumerate(train_loader):
@@ -255,11 +273,13 @@ if __name__ == "__main__":
             train_loss.append(loss.item())
             optimizer.step()
 
+            wandb.log({"loss": loss.item()})
+
             # logging
             if it % log_period == 0:
                 print(f'[{epoch}][{it}/{len(train_loader)}] loss: {loss.item()}')
                 torch.save(net.state_dict(),
-                   f'{mount_dir}/ckpt_model/simplenet_ep_{epoch}_ck{epoch}_{it}.pth')
+                            f'{mount_dir}/ckpt_model/simplenet_ep_{epoch}_it_{it}.pth')
 
             if it % eval_period == 0:
                 eval_data = a2bsDataset(loader_type='eval', build_cache=False)
@@ -292,4 +312,5 @@ if __name__ == "__main__":
                 print(
                     f'[{epoch}][{it}/{len(train_loader)}] eval loss: {np.average(eval_loss_st)}')
         torch.save(net.state_dict(),
-                   f'{mount_dir}/ckpt_model/simplenet_ep_{epoch}.pth')
+                    f'{mount_dir}/ckpt_model/simplenet_ep_{epoch}.pth')
+        wandb.finish()
