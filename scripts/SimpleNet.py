@@ -160,7 +160,7 @@ if __name__ == "__main__":
     from scripts.Dataset import a2bsDataset
     train_data = a2bsDataset(build_cache=False)
 
-    mount_dir = '/tsc003-beat-vol'
+    mount_dir = '/gxcheng-beat-vol'
 
     train_loader = torch.utils.data.DataLoader(
             train_data, 

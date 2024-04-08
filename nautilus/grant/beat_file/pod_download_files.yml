@@ -4,7 +4,7 @@ kind: Pod # 2 kinds: pods and jobs
 # jobs run until you want it to stop/is killed
 # usually choose which to run -- for experiments, just use Pod so if u forget to kill pod it will kill itself
 metadata:
-  name: gxcheng-download-files # define the name of container (prefix-what-do)
+  name: gxcheng-run-model # define the name of container (prefix-what-do)
   namespace: cyberarch # cyberarch namespace
 
 spec:
@@ -46,4 +46,4 @@ spec:
             - key: nvidia.com/gpu.product
               operator: In
               values:
-                - NVIDIA-GeForce-RTX-4090
+                - NVIDIA-GeForce-RTX-3090

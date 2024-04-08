@@ -210,7 +210,9 @@ class RMSLELoss(nn.Module):
 
 
 if __name__ == "__main__":
-    from scripts.Dataset import a2bsDataset
+    print("Initializing model...")
+
+    from Dataset import a2bsDataset
     train_data = a2bsDataset(build_cache=False)
 
     mount_dir = '/gxcheng-beat-vol'
@@ -256,6 +258,8 @@ if __name__ == "__main__":
             # logging
             if it % log_period == 0:
                 print(f'[{epoch}][{it}/{len(train_loader)}] loss: {loss.item()}')
+                torch.save(net.state_dict(),
+                   f'{mount_dir}/ckpt_model/simplenet_ep_{epoch}_ck{epoch}_{it}.pth')
 
             if it % eval_period == 0:
                 eval_data = a2bsDataset(loader_type='eval', build_cache=False)

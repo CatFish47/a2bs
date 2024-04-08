@@ -15,7 +15,7 @@ import scipy.io.wavfile
 
 
 class a2bsDataset(Dataset):
-    def __init__(self, seed = 42, loader_type = 'train', mount_dir = '/tsc003-beat-vol', data_dir = 'beat_english_v0.2.1', facial_fps=15, audio_fps=16000, facial_length=34, stride=10, speaker_id=True, build_cache=False, map_gb=5, file_cut=-1, is_win=False):
+    def __init__(self, seed = 42, loader_type = 'train', mount_dir = '/gxcheng-beat-vol', data_dir = 'beat_english_v0.2.1', facial_fps=15, audio_fps=16000, facial_length=34, stride=10, speaker_id=True, build_cache=False, map_gb=5, file_cut=-1, is_win=False):
         '''
             __init__: initializes the class
 
